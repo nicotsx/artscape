@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { ArrowRight, Calendar, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { ExhibitionCard } from "~/components/exhibition-card";
 import { exhibitions } from "~/data/mocks";
