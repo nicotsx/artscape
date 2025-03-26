@@ -12,7 +12,7 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export default () => {
+export default function Exhibitions() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
