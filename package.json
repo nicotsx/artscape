@@ -18,6 +18,7 @@
     "react-router": "^7.4.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@react-router/dev": "^7.4.0",
     "@tailwindcss/vite": "^4.0.17",
     "@types/node": "^20",
@@ -30,8 +31,6 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
   }
 }

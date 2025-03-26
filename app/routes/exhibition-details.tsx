@@ -1,4 +1,3 @@
-
 import { ArrowLeft, MapPin, Calendar, Share2, Heart, Ticket } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
 import { exhibitions } from '~/data/mocks';
@@ -6,17 +5,14 @@ import { exhibitions } from '~/data/mocks';
 export default function ExhibitionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const exhibition = exhibitions.find(e => e.id === Number(id));
+  const exhibition = exhibitions.find((e) => e.id === Number(id));
 
   if (!exhibition) {
     return (
       <div className="min-h-screen bg-black text-white pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Exhibition not found</h1>
-          <button
-            onClick={() => navigate('/exhibitions')}
-            className="mt-4 text-gray-400 hover:text-white transition flex items-center gap-2"
-          >
+          <button onClick={() => navigate('/exhibitions')} className="mt-4 text-gray-400 hover:text-white transition flex items-center gap-2">
             <ArrowLeft size={20} />
             Back to Exhibitions
           </button>
@@ -28,17 +24,10 @@ export default function ExhibitionDetails() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="h-[70vh] relative">
-        <img
-          src={exhibition.image}
-          alt={exhibition.title}
-          className="w-full h-full object-cover"
-        />
+        <img src={exhibition.image} alt={exhibition.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent">
           <div className="max-w-7xl mx-auto px-6 h-full flex flex-col justify-end pb-12">
-            <button
-              onClick={() => navigate('/exhibitions')}
-              className="mb-8 text-gray-400 hover:text-white transition flex items-center gap-2 w-fit"
-            >
+            <button onClick={() => navigate('/exhibitions')} className="mb-8 text-gray-400 hover:text-white transition flex items-center gap-2 w-fit">
               <ArrowLeft size={20} />
               Back to Exhibitions
             </button>
@@ -68,12 +57,8 @@ export default function ExhibitionDetails() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="md:col-span-2">
             <h2 className="text-2xl font-bold mb-6">About the Exhibition</h2>
-            <p className="text-gray-300 leading-relaxed mb-8">
-              {exhibition.shortDescription}
-            </p>
-            <p className="text-gray-300 leading-relaxed mb-8">
-              {exhibition.description}
-            </p>
+            <p className="text-gray-300 leading-relaxed mb-8">{exhibition.shortDescription}</p>
+            <p className="text-gray-300 leading-relaxed mb-8">{exhibition.description}</p>
             <div className="aspect-video rounded-xl overflow-hidden mb-8">
               <img
                 src={`https://images.unsplash.com/photo-${exhibition.id === 1 ? '1561214115-f2f134cc4912' : '1545989253-02cc26577f88'}?auto=format&fit=crop&q=80&w=2940`}

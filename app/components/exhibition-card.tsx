@@ -1,5 +1,5 @@
-import { Calendar, MapPin } from "lucide-react"
-import type { Exhibition } from "~/data/mocks";
+import { Calendar, MapPin } from 'lucide-react';
+import type { Exhibition } from '~/data/mocks';
 
 export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
   return (
@@ -28,4 +28,4 @@ export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
       </div>
     </div>
   );
-}
+};

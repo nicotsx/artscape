@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Filter, Search } from 'lucide-react';
-import { exhibitions } from '~/data/mocks';
-import { ExhibitionCard } from '~/components/exhibition-card';
+import { useState } from 'react';
 import { Link } from 'react-router';
+import { ExhibitionCard } from '~/components/exhibition-card';
+import { exhibitions } from '~/data/mocks';
 import type { Route } from './+types/exhibitions';
 
-export function meta({ }: Route.MetaArgs) {
-  return [
-    { title: "Exhibitions - Artscape" },
-    { name: "description", content: "Discover Art Exhibitions" },
-  ];
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(10px)' },
+  show: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 100, damping: 15, mass: 1 } },
+};
+
+export function meta({}: Route.MetaArgs) {
+  return [{ title: 'Exhibitions - Artscape' }, { name: 'description', content: 'Discover Art Exhibitions' }];
 }
 
 export default function Exhibitions() {
@@ -18,9 +26,9 @@ export default function Exhibitions() {
 
   const categories = ['All', 'Contemporary', 'Digital Art', 'Abstract', 'Photography', 'Sculpture'];
 
-  const filteredExhibitions = exhibitions.filter(exhibition => {
-    const matchesSearch = exhibition.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      exhibition.artist.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredExhibitions = exhibitions.filter((exhibition) => {
+    const matchesSearch =
+      exhibition.title.toLowerCase().includes(searchQuery.toLowerCase()) || exhibition.artist.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || exhibition.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -28,11 +36,16 @@ export default function Exhibitions() {
   return (
     <div className="min-h-screen bg-black text-white pt-24">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-12">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-12">
           <h1 className="text-4xl font-bold">All Exhibitions</h1>
           <p className="text-gray-400 mt-2">Explore our curated collection of ongoing exhibitions</p>
-        </div>
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-col md:flex-row gap-4 mb-8"
+        >
           <div className="flex-1">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -52,24 +65,33 @@ export default function Exhibitions() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${selectedCategory === category
-                    ? 'bg-white text-black'
-                    : 'bg-white/5 hover:bg-white/10'
-                    }`}
+                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${
+                    selectedCategory === category ? 'bg-white text-black' : 'bg-white/5 hover:bg-white/10'
+                  }`}
                 >
                   {category}
                 </button>
               ))}
             </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        </motion.div>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+        >
           {filteredExhibitions.map((exhibition) => (
-            <Link to={`/exhibitions/${exhibition.id}`} key={exhibition.id} className="group">
-              <ExhibitionCard exhibition={exhibition} />
-            </Link>
+            <motion.div key={exhibition.id} variants={cardVariants} className="h-full">
+              <Link
+                to={`/exhibitions/${exhibition.id}`}
+                className="group block h-full transform transition-transform duration-300 hover:scale-[1.02]"
+              >
+                <ExhibitionCard exhibition={exhibition} />
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
