@@ -1,9 +1,9 @@
 import { type Env, Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { docsController } from './controllers/docs.controller';
+import { exhibitionsController } from './controllers/exhibition.controller';
 import { initializeEnv } from './core/env/env';
-import { exhibitionsController } from './modules/exhibitions/exhibition.controller';
-import { exhibitionService } from './modules/exhibitions/exhibition.service';
+import { exhibitionService } from './services/exhibition.service';
 
 export type Bindings = {
   HARVARD_API_KEY: string;

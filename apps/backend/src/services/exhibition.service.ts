@@ -1,17 +1,22 @@
 import { eq } from 'drizzle-orm';
-import { exhibitionsTable, venuesTable } from '../../core/db/schema';
-import { db, env } from '../../core/env/env';
-import { HarvardApiClient } from './harvard-api-client';
-import { UnsplashApiClient } from './unsplash-api-client';
+import { HarvardApiClient } from '../clients/harvard-api-client';
+import { UnsplashApiClient } from '../clients/unsplash-api-client';
+import { exhibitionsTable, venuesTable } from '../core/db/schema';
+import { db, env } from '../core/env/env';
 
+/**
+ * This function fetches the current exhibitions from the database.
+ */
 const getExhibitions = async () => {
   const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true } });
   return exhibitions;
 };
 
+/**
+ * This function fetches the current exhibitions from the Harvard API and stores them in the database.
+ * If an exhibition already exists in the database, it will be updated with the latest information.
+ */
 const fetchExhibitions = async () => {
-  db.delete(exhibitionsTable);
-  db.delete(venuesTable);
   const harvardClient = new HarvardApiClient(env.HARVARD_API_KEY);
   const unsplashClient = new UnsplashApiClient(env.UNSPLASH_ACCESS_KEY);
 
