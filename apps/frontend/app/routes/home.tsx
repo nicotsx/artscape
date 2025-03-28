@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { Link } from 'react-router';
 import { getApiExhibitions } from '~/api-client';
 import { ExhibitionCard } from '~/components/exhibition-card';
+import { getOptimizedImageUrl } from '~/utils/cloudinary';
 import type { Route } from './+types/home';
 
 export function meta() {
@@ -53,7 +54,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             className="w-full h-full"
           >
             <img
-              src="https://images.unsplash.com/photo-1577720580479-7d839d829c73?auto=format&fit=crop&q=80&w=2940"
+              src={getOptimizedImageUrl('https://images.unsplash.com/photo-1577720580479-7d839d829c73', 2000)}
               alt="Hero"
               className="w-full h-full object-cover"
             />

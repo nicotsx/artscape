@@ -1,11 +1,12 @@
-import { Calendar, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import type { Exhibition } from '~/types/api.types';
+import { getOptimizedImageUrl } from '~/utils/cloudinary';
 
 export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
   return (
     <div className="relative overflow-hidden rounded-xl aspect-[4/5]">
       <img
-        src={exhibition.image}
+        src={getOptimizedImageUrl(exhibition.image, 1920)}
         alt={exhibition.title}
         className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
       />
@@ -18,10 +19,6 @@ export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
             <div className="flex items-center space-x-2">
               <MapPin size={16} />
               <span className="text-sm">{exhibition.venue.fullname}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Calendar size={16} />
-              <span className="text-sm">{exhibition.startDate}</span>
             </div>
           </div>
         </div>

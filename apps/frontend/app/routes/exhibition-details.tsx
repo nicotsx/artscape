@@ -2,6 +2,7 @@ import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from 'lucide-react
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useNavigate } from 'react-router';
 import { getApiExhibitionsById } from '~/api-client';
+import { getOptimizedImageUrl } from '~/utils/cloudinary';
 import type { Route } from './+types/exhibition-details';
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -46,7 +47,12 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="h-[70vh] relative overflow-hidden">
-        <motion.img style={{ scale: imageScale }} src={exhibition.image} alt={exhibition.title} className="w-full h-full object-cover" />
+        <motion.img
+          style={{ scale: imageScale }}
+          src={getOptimizedImageUrl(exhibition.image, 1920)}
+          alt={exhibition.title}
+          className="w-full h-full object-cover"
+        />
         <motion.div style={{ opacity: 1 }} className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent">
           <motion.div className="max-w-7xl mx-auto px-6 h-full flex flex-col justify-end pb-12">
             <motion.button
@@ -110,7 +116,7 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
               viewport={{ once: true }}
               className="aspect-video rounded-xl overflow-hidden mb-8"
             >
-              <img src={exhibition.image} alt="Exhibition Space" className="w-full h-full object-cover" />
+              <img src={getOptimizedImageUrl(exhibition.image, 1920)} alt="Exhibition Space" className="w-full h-full object-cover" />
             </motion.div>
           </motion.div>
           <motion.div variants={fadeInUp} className="md:col-span-1">
