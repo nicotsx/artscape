@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { useNavigate, useParams } from 'react-router';
 import { exhibitions } from '~/data/mocks';
 
@@ -13,11 +13,7 @@ export default function ExhibitionDetails() {
 
   if (!exhibition) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="min-h-screen bg-black text-white pt-24 flex items-center justify-center"
-      >
+      <motion.div className="min-h-screen bg-black text-white pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Exhibition not found</h1>
           <motion.button onClick={() => navigate('/exhibitions')} className="mt-4 text-gray-400 hover:text-white transition flex items-center gap-2">

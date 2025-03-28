@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { Filter, Search } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { ExhibitionCard } from '~/components/exhibition-card';
