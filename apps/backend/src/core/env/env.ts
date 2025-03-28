@@ -7,6 +7,7 @@ import * as schema from '../db/schema';
 
 const envSchema = type({
   HARVARD_API_KEY: 'string',
+  UNSPLASH_ACCESS_KEY: 'string',
 });
 
 let env: typeof envSchema.infer;

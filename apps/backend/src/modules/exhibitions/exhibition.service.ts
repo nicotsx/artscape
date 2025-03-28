@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { exhibitionsTable, venuesTable } from '../../core/db/schema';
 import { db, env } from '../../core/env/env';
 import { HarvardApiClient } from './harvard-api-client';
+import { UnsplashApiClient } from './unsplash-api-client';
 
 const getExhibitions = async () => {
   const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true } });
@@ -11,8 +12,10 @@ const getExhibitions = async () => {
 const fetchExhibitions = async () => {
   db.delete(exhibitionsTable);
   db.delete(venuesTable);
-  const client = new HarvardApiClient(env.HARVARD_API_KEY);
-  const apiExhibition = await client.getCurrentExhibitions();
+  const harvardClient = new HarvardApiClient(env.HARVARD_API_KEY);
+  const unsplashClient = new UnsplashApiClient(env.UNSPLASH_ACCESS_KEY);
+
+  const apiExhibition = await harvardClient.getCurrentExhibitions();
 
   for (const exhibition of apiExhibition.records) {
     const venue = exhibition.venues[0];
@@ -31,12 +34,22 @@ const fetchExhibitions = async () => {
     const { id, title, poster, begindate, enddate, description, shortdescription } = exhibition;
     const dbExhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id) });
 
+    // Try to get an image from Unsplash if no poster is available
+    let imageUrl = poster?.imageurl ?? dbExhibition?.image;
+
+    if (!imageUrl) {
+      const unsplashImage = await unsplashClient.searchImage(title);
+      if (unsplashImage) {
+        imageUrl = unsplashImage.urls.full;
+      }
+    }
+
     if (dbExhibition) {
       await db
         .update(exhibitionsTable)
         .set({
           title,
-          image: poster?.imageurl ?? '',
+          image: imageUrl ?? '',
           startDate: begindate,
           endDate: enddate,
           venueId: dbVenue.id,
@@ -48,7 +61,7 @@ const fetchExhibitions = async () => {
       await db.insert(exhibitionsTable).values({
         id,
         title,
-        image: poster?.imageurl ?? '',
+        image: imageUrl ?? '',
         startDate: begindate,
         endDate: enddate,
         venueId: dbVenue.id,

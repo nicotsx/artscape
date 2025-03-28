@@ -7,6 +7,7 @@ import { exhibitionService } from './modules/exhibitions/exhibition.service';
 
 export type Bindings = {
   HARVARD_API_KEY: string;
+  UNSPLASH_ACCESS_KEY: string;
   DB: D1Database;
   KV: KVNamespace;
 };
