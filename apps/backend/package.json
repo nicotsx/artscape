@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "db:migrate": "npx wrangler d1 migrations apply DB --local"
+  },
+  "dependencies": {
+    "@hono/arktype-validator": "^2.0.0",
+    "@scalar/hono-api-reference": "^0.7.3",
+    "arktype": "^2.1.15",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.41.0",
+    "hono": "^4.7.5",
+    "hono-openapi": "^0.4.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250214.0",
+    "drizzle-kit": "^0.30.6",
+    "wrangler": "^4.4.0"
+  }
+}
