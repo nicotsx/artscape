@@ -8,7 +8,10 @@ export const docsController = (app: HonoApp) => {
     openAPISpecs(app, {
       documentation: {
         info: { title: 'Artscape API', version: '1.0.0', description: 'API for Artscape' },
-        servers: [{ url: 'https://artscape.4each.org', description: 'Production Server' }],
+        servers: [
+          { url: 'https://artscape.4each.org', description: 'Production Server' },
+          { url: 'http://localhost:8080', description: 'Development Server' },
+        ],
       },
     }),
   );

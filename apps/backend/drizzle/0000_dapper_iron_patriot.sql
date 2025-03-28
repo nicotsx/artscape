@@ -1,4 +1,4 @@
-CREATE TABLE `exhibitions` (
+CREATE TABLE IF NOT EXISTS `exhibitions` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`title` text,
 	`image` text,
@@ -7,7 +7,7 @@ CREATE TABLE `exhibitions` (
 	`venueId` integer
 );
 --> statement-breakpoint
-CREATE TABLE `venues` (
+CREATE TABLE IF NOT EXISTS `venues` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text,
 	`fullname` text,

@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const exhibitionsTable = sqliteTable('exhibitions', {
@@ -6,8 +7,17 @@ export const exhibitionsTable = sqliteTable('exhibitions', {
   image: text(),
   startDate: text(),
   endDate: text(),
-  venueId: int(),
+  venueId: int().references(() => venuesTable.id),
+  shortDescription: text(),
+  description: text(),
 });
+
+export const exhibitionRelations = relations(exhibitionsTable, ({ one }) => ({
+  venue: one(venuesTable, {
+    fields: [exhibitionsTable.venueId],
+    references: [venuesTable.id],
+  }),
+}));
 
 export const venuesTable = sqliteTable('venues', {
   id: int().primaryKey(),

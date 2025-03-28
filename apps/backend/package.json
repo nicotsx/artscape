@@ -3,7 +3,8 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "db:migrate": "npx wrangler d1 migrations apply DB --local"
+    "db:migrate": "npx wrangler d1 migrations apply DB --local",
+    "db:generate-migrations": "npx drizzle-kit generate"
   },
   "dependencies": {
     "@hono/arktype-validator": "^2.0.0",

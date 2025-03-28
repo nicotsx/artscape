@@ -1,15 +1,20 @@
 import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Link } from 'react-router';
+import { getApiExhibitions } from '~/api-client';
 import { ExhibitionCard } from '~/components/exhibition-card';
-import { exhibitions } from '~/data/mocks';
 import type { Route } from './+types/home';
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [{ title: 'Artscape' }, { name: 'description', content: 'Discover Art Exhibitions' }];
 }
 
-export default function Home() {
+export async function loader() {
+  const { data } = await getApiExhibitions();
+  return data;
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
   const { scrollY } = useScroll();
 
   const heroImageScale = useTransform(scrollY, [0, 500], [1, 1.1]);
@@ -113,7 +118,7 @@ export default function Home() {
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {exhibitions.slice(0, 3).map((exhibition, index) => (
+          {loaderData?.exhibitions.slice(0, 3).map((exhibition, index) => (
             <motion.div
               key={exhibition.id}
               variants={{

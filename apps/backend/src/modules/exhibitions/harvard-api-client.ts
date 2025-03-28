@@ -13,11 +13,13 @@ const venueSchema = type({
 const exhibitionSchema = type({
   id: 'number',
   title: 'string',
+  shortdescription: type('string | null').optional(),
+  description: type('string | null').optional(),
   begindate: 'string',
   enddate: 'string',
   venues: venueSchema.array(),
   poster: type({
-    imageUrl: 'string?',
+    imageurl: 'string?',
     caption: 'string?',
   }).optional(),
 });

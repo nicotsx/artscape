@@ -28,7 +28,7 @@ const fetchExhibitions = async () => {
       dbVenue = newVenue;
     }
 
-    const { id, title, poster, begindate, enddate } = exhibition;
+    const { id, title, poster, begindate, enddate, description, shortdescription } = exhibition;
     const dbExhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id) });
 
     if (dbExhibition) {
@@ -36,20 +36,24 @@ const fetchExhibitions = async () => {
         .update(exhibitionsTable)
         .set({
           title,
-          image: poster?.imageUrl ?? '',
+          image: poster?.imageurl ?? '',
           startDate: begindate,
           endDate: enddate,
           venueId: dbVenue.id,
+          description,
+          shortDescription: shortdescription,
         })
         .where(eq(exhibitionsTable.id, id));
     } else {
       await db.insert(exhibitionsTable).values({
         id,
         title,
-        image: poster?.imageUrl ?? '',
+        image: poster?.imageurl ?? '',
         startDate: begindate,
         endDate: enddate,
         venueId: dbVenue.id,
+        description,
+        shortDescription: shortdescription,
       });
     }
   }

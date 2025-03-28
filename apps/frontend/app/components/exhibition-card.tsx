@@ -1,5 +1,5 @@
 import { Calendar, MapPin } from 'lucide-react';
-import type { Exhibition } from '~/data/mocks';
+import type { Exhibition } from '~/types/api.types';
 
 export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
   return (
@@ -11,17 +11,17 @@ export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 p-6">
-          <p className="text-sm font-medium text-gray-300">{exhibition.category}</p>
+          <p className="text-sm font-medium text-gray-300">{exhibition.title}</p>
           <h3 className="text-xl font-bold mt-2">{exhibition.title}</h3>
-          <p className="text-gray-300 mt-1">{exhibition.artist}</p>
+          <p className="text-gray-300 mt-1">{exhibition.venue.fullname}</p>
           <div className="flex items-center space-x-4 mt-4">
             <div className="flex items-center space-x-2">
               <MapPin size={16} />
-              <span className="text-sm">{exhibition.location}</span>
+              <span className="text-sm">{exhibition.venue.fullname}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Calendar size={16} />
-              <span className="text-sm">{exhibition.date}</span>
+              <span className="text-sm">{exhibition.startDate}</span>
             </div>
           </div>
         </div>

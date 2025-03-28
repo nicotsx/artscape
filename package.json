@@ -5,10 +5,12 @@
   "main": "index.js",
   "packageManager": "pnpm@10.6.5",
   "dependencies": {
+    "@hey-api/openapi-ts": "^0.64.15",
     "turbo": "^2.4.4"
   },
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "gen:api-client": "openapi-ts"
   },
   "author": "",
   "license": "ISC"
