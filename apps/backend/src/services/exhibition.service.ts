@@ -13,6 +13,15 @@ const getExhibitions = async () => {
 };
 
 /**
+ * This function fetches a single exhibition from the database.
+ * @param id The ID of the exhibition to fetch.
+ */
+const getExhibition = async (id: number) => {
+  const exhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id), with: { venue: true } });
+  return exhibition;
+};
+
+/**
  * This function fetches the current exhibitions from the Harvard API and stores them in the database.
  * If an exhibition already exists in the database, it will be updated with the latest information.
  */
@@ -79,5 +88,6 @@ const fetchExhibitions = async () => {
 
 export const exhibitionService = {
   getExhibitions,
+  getExhibition,
   fetchExhibitions,
 };

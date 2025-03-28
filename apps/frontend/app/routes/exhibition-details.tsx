@@ -1,17 +1,21 @@
 import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useNavigate, useParams } from 'react-router';
-import { exhibitions } from '~/data/mocks';
+import { useNavigate } from 'react-router';
+import { getApiExhibitionsById } from '~/api-client';
+import type { Route } from './+types/exhibition-details';
 
-export default function ExhibitionDetails() {
-  const { id } = useParams();
+export async function loader({ params }: Route.LoaderArgs) {
+  const { data } = await getApiExhibitionsById({ path: { id: params.id } });
+  return data;
+}
+
+export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const exhibition = exhibitions.find((e) => e.id === Number(id));
   const { scrollY } = useScroll();
 
   const imageScale = useTransform(scrollY, [0, 600], [1, 1.1]);
 
-  if (!exhibition) {
+  if (!loaderData?.exhibition) {
     return (
       <motion.div className="min-h-screen bg-black text-white pt-24 flex items-center justify-center">
         <div className="text-center">
@@ -24,6 +28,10 @@ export default function ExhibitionDetails() {
       </motion.div>
     );
   }
+
+  const { exhibition } = loaderData;
+
+  const address = [exhibition.venue.city, exhibition.venue.state, exhibition.venue.country, exhibition.venue.address1].filter(Boolean).join(', ');
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -59,13 +67,13 @@ export default function ExhibitionDetails() {
             >
               <div>
                 <motion.p variants={fadeInUp} className="text-sm font-medium text-gray-300 mb-4">
-                  {exhibition.category}
+                  {exhibition.venue.fullname}
                 </motion.p>
                 <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4">
                   {exhibition.title}
                 </motion.h1>
                 <motion.p variants={fadeInUp} className="text-xl text-gray-300">
-                  {exhibition.artist}
+                  {exhibition.shortDescription}
                 </motion.p>
               </div>
               <motion.div variants={fadeInUp} className="flex gap-4">
@@ -94,7 +102,6 @@ export default function ExhibitionDetails() {
         >
           <motion.div variants={fadeInUp} className="md:col-span-2">
             <h2 className="text-2xl font-bold mb-6">About the Exhibition</h2>
-            <p className="text-gray-300 leading-relaxed mb-8">{exhibition.shortDescription}</p>
             <p className="text-gray-300 leading-relaxed mb-8">{exhibition.description}</p>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -103,13 +110,7 @@ export default function ExhibitionDetails() {
               viewport={{ once: true }}
               className="aspect-video rounded-xl overflow-hidden mb-8"
             >
-              <img
-                src={`https://images.unsplash.com/photo-${
-                  exhibition.id === 1 ? '1561214115-f2f134cc4912' : '1545989253-02cc26577f88'
-                }?auto=format&fit=crop&q=80&w=2940`}
-                alt="Exhibition Space"
-                className="w-full h-full object-cover"
-              />
+              <img src={exhibition.image} alt="Exhibition Space" className="w-full h-full object-cover" />
             </motion.div>
           </motion.div>
           <motion.div variants={fadeInUp} className="md:col-span-1">
@@ -119,14 +120,16 @@ export default function ExhibitionDetails() {
                 <motion.div whileHover={{ x: 5 }} className="flex items-center gap-3">
                   <MapPin size={20} className="text-gray-400" />
                   <div>
-                    <p className="font-medium">{exhibition.location}</p>
-                    <p className="text-sm text-gray-400">123 Art Street, City</p>
+                    <p className="font-medium">{exhibition.venue.fullname}</p>
+                    <p className="text-sm text-gray-400">{address}</p>
                   </div>
                 </motion.div>
                 <motion.div whileHover={{ x: 5 }} className="flex items-center gap-3">
                   <Calendar size={20} className="text-gray-400" />
                   <div>
-                    <p className="font-medium">{exhibition.date}</p>
+                    <p className="font-medium">
+                      {new Date(exhibition.startDate).toLocaleDateString()} - {new Date(exhibition.endDate).toLocaleDateString()}
+                    </p>
                     <p className="text-sm text-gray-400">10:00 AM - 6:00 PM</p>
                   </div>
                 </motion.div>

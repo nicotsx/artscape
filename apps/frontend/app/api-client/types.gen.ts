@@ -14,6 +14,7 @@ export type GetApiExhibitionsResponses = {
             endDate: string;
             id: number;
             image: string;
+            shortDescription: string | unknown;
             startDate: string;
             title: string;
             venue: {
@@ -32,6 +33,41 @@ export type GetApiExhibitionsResponses = {
 
 export type GetApiExhibitionsResponse = GetApiExhibitionsResponses[keyof GetApiExhibitionsResponses];
 
+export type GetApiExhibitionsByIdData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/exhibitions/{id}';
+};
+
+export type GetApiExhibitionsByIdResponses = {
+    200: {
+        exhibition: {
+            description: string | unknown;
+            endDate: string;
+            id: number;
+            image: string;
+            shortDescription: string | unknown;
+            startDate: string;
+            title: string;
+            venue: {
+                address1: string | unknown;
+                city: string | unknown;
+                country: string | unknown;
+                fullname: string;
+                id: number;
+                name: string;
+                state: string | unknown;
+            };
+            venueId: number;
+        };
+    };
+};
+
+export type GetApiExhibitionsByIdResponse = GetApiExhibitionsByIdResponses[keyof GetApiExhibitionsByIdResponses];
+
 export type ClientOptions = {
-    baseUrl: 'https://artscape.4each.org' | (string & {});
+    baseUrl: 'https://artscape.4each.org' | 'http://localhost:8080' | (string & {});
 };
