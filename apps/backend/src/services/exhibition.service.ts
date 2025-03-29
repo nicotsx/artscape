@@ -3,13 +3,13 @@ import { HarvardApiClient } from '../clients/harvard-api-client';
 import { UnsplashApiClient } from '../clients/unsplash-api-client';
 import { WeatherApiClient } from '../clients/weather-api-client';
 import { type Venue, exhibitionsTable, venuesTable } from '../core/db/schema';
-import { db, env } from '../core/env/env';
+import { db, env, kv } from '../core/env/env';
 
 /**
  * This function fetches the current exhibitions from the database.
  */
 const getExhibitions = async () => {
-  const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true } });
+  const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true }, where: eq(exhibitionsTable.ongoing, 1) });
 
   const exhibitionsWithWeather = await Promise.all(
     exhibitions.map(async (exhibition) => {
@@ -53,6 +53,13 @@ const getExhibitionWeather = async (venue: Venue | null) => {
     return null;
   }
 
+  const cacheKey = `weather:${venue.city.toLowerCase().trim()}`;
+  const cachedData = await kv.get(cacheKey, 'json');
+
+  if (cachedData) {
+    return cachedData;
+  }
+
   const weatherClient = new WeatherApiClient();
   const coords = await weatherClient.geocodeCity(venue.city);
 
@@ -60,7 +67,13 @@ const getExhibitionWeather = async (venue: Venue | null) => {
     return null;
   }
 
-  return weatherClient.getWeatherForecast(coords.latitude, coords.longitude);
+  const weatherData = await weatherClient.getWeatherForecast(coords.latitude, coords.longitude);
+
+  if (weatherData) {
+    await kv.put(cacheKey, JSON.stringify(weatherData), { expirationTtl: 3600 });
+  }
+
+  return weatherData;
 };
 
 /**
@@ -72,6 +85,8 @@ const fetchExhibitions = async () => {
   const unsplashClient = new UnsplashApiClient(env.UNSPLASH_ACCESS_KEY);
 
   const apiExhibition = await harvardClient.getCurrentExhibitions();
+
+  await db.update(exhibitionsTable).set({ ongoing: 0 });
 
   for (const exhibition of apiExhibition.records) {
     const venue = exhibition.venues[0];
@@ -90,7 +105,6 @@ const fetchExhibitions = async () => {
     const { id, title, poster, begindate, enddate, description, shortdescription } = exhibition;
     const dbExhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id) });
 
-    // Try to get an image from Unsplash if no poster is available
     let imageUrl = poster?.imageurl ?? dbExhibition?.image;
 
     if (!imageUrl) {
@@ -105,6 +119,7 @@ const fetchExhibitions = async () => {
         .update(exhibitionsTable)
         .set({
           title,
+          ongoing: 1,
           image: imageUrl ?? '',
           startDate: begindate,
           endDate: enddate,

@@ -5,8 +5,8 @@ const unsplashImageSchema = type({
   urls: {
     full: 'string',
   },
-  alt_description: 'string?',
-  description: 'string',
+  alt_description: type('string | null').optional(),
+  description: type('string | null').optional(),
   user: {
     name: 'string',
     username: 'string',
@@ -52,4 +52,3 @@ export class UnsplashApiClient {
     return parsedResponse.results[0] || null;
   }
 }
-

@@ -10,6 +10,7 @@ export const exhibitionsTable = sqliteTable('exhibitions', {
   venueId: int().references(() => venuesTable.id),
   shortDescription: text(),
   description: text(),
+  ongoing: int(),
 });
 
 export const exhibitionRelations = relations(exhibitionsTable, ({ one }) => ({
