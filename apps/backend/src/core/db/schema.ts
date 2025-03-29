@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { type InferSelectModel, relations } from 'drizzle-orm';
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const exhibitionsTable = sqliteTable('exhibitions', {
@@ -27,3 +27,6 @@ export const venuesTable = sqliteTable('venues', {
   country: text(),
   address1: text(),
 });
+
+export type Venue = InferSelectModel<typeof venuesTable>;
+export type Exhibition = InferSelectModel<typeof exhibitionsTable>;

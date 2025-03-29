@@ -1,5 +1,10 @@
 import { type } from 'arktype';
 
+const weatherForecastType = type({
+  today: 'string?',
+  tomorrow: 'string?',
+});
+
 export const getExhibitionsResponse = type({
   exhibitions: type({
     title: 'string',
@@ -19,6 +24,10 @@ export const getExhibitionsResponse = type({
       address1: 'string | null',
       id: 'number',
     }),
+    weather: type({
+      today: 'number?',
+      tomorrow: 'number?',
+    }).optional(),
   }).array(),
 });
 
@@ -41,5 +50,6 @@ export const getExhibitionResponse = type({
       address1: 'string | null',
       id: 'number',
     }),
+    weather: weatherForecastType.optional(),
   }),
 });

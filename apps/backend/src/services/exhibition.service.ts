@@ -1,7 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { HarvardApiClient } from '../clients/harvard-api-client';
 import { UnsplashApiClient } from '../clients/unsplash-api-client';
-import { exhibitionsTable, venuesTable } from '../core/db/schema';
+import { WeatherApiClient } from '../clients/weather-api-client';
+import { type Venue, exhibitionsTable, venuesTable } from '../core/db/schema';
 import { db, env } from '../core/env/env';
 
 /**
@@ -9,7 +10,18 @@ import { db, env } from '../core/env/env';
  */
 const getExhibitions = async () => {
   const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true } });
-  return exhibitions;
+
+  const exhibitionsWithWeather = await Promise.all(
+    exhibitions.map(async (exhibition) => {
+      const weather = await getExhibitionWeather(exhibition.venue);
+      return {
+        ...exhibition,
+        weather,
+      };
+    }),
+  );
+
+  return exhibitionsWithWeather;
 };
 
 /**
@@ -18,7 +30,37 @@ const getExhibitions = async () => {
  */
 const getExhibition = async (id: number) => {
   const exhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id), with: { venue: true } });
-  return exhibition;
+
+  if (!exhibition) {
+    return null;
+  }
+
+  const weather = await getExhibitionWeather(exhibition.venue);
+
+  return {
+    ...exhibition,
+    weather,
+  };
+};
+
+/**
+ * Get weather forecast for an exhibition venue
+ * @param venue The venue object containing location information
+ * @returns Weather forecast data or null if unavailable
+ */
+const getExhibitionWeather = async (venue: Venue | null) => {
+  if (!venue || !venue.city) {
+    return null;
+  }
+
+  const weatherClient = new WeatherApiClient();
+  const coords = await weatherClient.geocodeCity(venue.city);
+
+  if (!coords) {
+    return null;
+  }
+
+  return weatherClient.getWeatherForecast(coords.latitude, coords.longitude);
 };
 
 /**

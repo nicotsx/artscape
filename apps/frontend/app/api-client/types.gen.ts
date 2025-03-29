@@ -27,6 +27,10 @@ export type GetApiExhibitionsResponses = {
                 state: string | unknown;
             };
             venueId: number;
+            weather?: {
+                today?: number;
+                tomorrow?: number;
+            };
         }>;
     };
 };
@@ -62,6 +66,10 @@ export type GetApiExhibitionsByIdResponses = {
                 state: string | unknown;
             };
             venueId: number;
+            weather?: {
+                today?: string;
+                tomorrow?: string;
+            };
         };
     };
 };
