@@ -22,13 +22,24 @@ exhibitionsController(app);
 
 export default {
   async fetch(request: Request, env: Env & Bindings, ctx: ExecutionContext) {
-    initializeEnv(env);
+    try {
+      console.info('Request received', request.url);
+      initializeEnv(env);
 
-    return app.fetch(request, env, ctx);
+      return app.fetch(request, env, ctx);
+    } catch (error) {
+      console.error(error);
+      return new Response('Internal Server Error', { status: 500 });
+    }
   },
-  async scheduled(_: ScheduledController, env: Env & Bindings, ctx: ExecutionContext): Promise<void> {
-    initializeEnv(env);
+  async scheduled(cron: ScheduledController, env: Env & Bindings, ctx: ExecutionContext): Promise<void> {
+    try {
+      console.info('Scheduled task started', cron.cron, cron.scheduledTime);
+      initializeEnv(env);
 
-    ctx.waitUntil(exhibitionService.fetchExhibitions());
+      ctx.waitUntil(exhibitionService.fetchExhibitions());
+    } catch (error) {
+      console.error(error);
+    }
   },
 };

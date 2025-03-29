@@ -9,6 +9,7 @@ import { db, env, kv } from '../core/env/env';
  * This function fetches the current exhibitions from the database.
  */
 const getExhibitions = async () => {
+  console.info('Fetching current exhibitions');
   const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true }, where: eq(exhibitionsTable.ongoing, 1) });
 
   const exhibitionsWithWeather = await Promise.all(
@@ -21,6 +22,8 @@ const getExhibitions = async () => {
     }),
   );
 
+  console.info('Fetched', exhibitionsWithWeather.length, 'exhibitions');
+
   return exhibitionsWithWeather;
 };
 
@@ -29,6 +32,7 @@ const getExhibitions = async () => {
  * @param id The ID of the exhibition to fetch.
  */
 const getExhibition = async (id: number) => {
+  console.info('Fetching exhibition with ID:', id);
   const exhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id), with: { venue: true } });
 
   if (!exhibition) {
@@ -36,6 +40,8 @@ const getExhibition = async (id: number) => {
   }
 
   const weather = await getExhibitionWeather(exhibition.venue);
+
+  console.info('Fetched exhibition:', exhibition.title);
 
   return {
     ...exhibition,
@@ -81,10 +87,13 @@ const getExhibitionWeather = async (venue: Venue | null) => {
  * If an exhibition already exists in the database, it will be updated with the latest information.
  */
 const fetchExhibitions = async () => {
+  console.info('Fetching exhibitions from Harvard API');
   const harvardClient = new HarvardApiClient(env.HARVARD_API_KEY);
   const unsplashClient = new UnsplashApiClient(env.UNSPLASH_ACCESS_KEY);
 
   const apiExhibition = await harvardClient.getCurrentExhibitions();
+
+  console.info('Fetched ', apiExhibition.records.length, 'exhibitions from Harvard API');
 
   await db.update(exhibitionsTable).set({ ongoing: 0 });
 

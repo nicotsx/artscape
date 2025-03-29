@@ -1,14 +1,11 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "artscape",
-  "main": "./workers/index.ts",
+  "name": "backend",
+  "main": "./src/index.ts",
   "compatibility_date": "2025-03-27",
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "assets": {
-    "directory": "./apps/frontend/build/client"
-  },
   "kv_namespaces": [
     {
       "binding": "KV",
@@ -27,12 +24,5 @@
     "crons": [
       "0 * * * *"
     ]
-  },
-  "observability": {
-    "enabled": true,
-    "logs": {
-      "enabled": true
-    }
-  },
-  "logpush": true
+  }
 }

@@ -18,7 +18,6 @@ export const links: Route.LinksFunction = () => [
 
 client.setConfig({
   credentials: 'include',
-  baseUrl: import.meta.env.VITE_API_URL,
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {

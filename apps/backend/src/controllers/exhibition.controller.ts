@@ -1,11 +1,11 @@
-import type { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver } from 'hono-openapi/arktype';
-import type { Bindings } from '../..';
+import type { HonoApp } from '..';
+
 import { exhibitionService } from '../services/exhibition.service';
 import { getExhibitionResponse, getExhibitionsResponse } from './dto/exhibition.dto';
 
-export const exhibitionsController = (app: Hono<{ Bindings: Bindings }>) => {
+export const exhibitionsController = (app: HonoApp) => {
   app.get(
     '/exhibitions',
     describeRoute({
