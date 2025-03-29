@@ -20,7 +20,7 @@ export const getOptimizedImageUrl = (imageUrl: string, width: number, height?: n
       transformations.push(`w_${width}`);
     }
 
-    transformations.push('q_auto,f_auto');
+    transformations.push('q_auto,f_webp');
 
     const transformationString = transformations.join(',');
     const cleanUrl = imageUrl.split('?')[0];

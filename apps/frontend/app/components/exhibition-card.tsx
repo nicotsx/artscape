@@ -3,10 +3,15 @@ import type { Exhibition } from '~/types/api.types';
 import { getOptimizedImageUrl } from '~/utils/cloudinary';
 
 export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
+  const handleMouseEnter = () => {
+    const img = new Image();
+    img.src = getOptimizedImageUrl(exhibition.image, 1920);
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-xl aspect-[4/5]">
+    <div className="relative overflow-hidden rounded-xl aspect-[4/5] group" onMouseEnter={handleMouseEnter}>
       <img
-        src={getOptimizedImageUrl(exhibition.image, 1920)}
+        src={getOptimizedImageUrl(exhibition.image, 800)}
         alt={exhibition.title}
         className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
       />
