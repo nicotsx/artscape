@@ -17,7 +17,7 @@
       "binding": "DB",
       "database_name": "artscape",
       "database_id": "1a9a1733-ea36-4b69-bbc4-82216a8c8fcf",
-      "migrations_dir": "./drizzle"
+      "migrations_dir": "../../drizzle"
     }
   ],
   "triggers": {

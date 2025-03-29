@@ -22,8 +22,7 @@
     "deploy": "wrangler deploy",
     "gen:api-client": "openapi-ts",
     "db:generate-migrations": "npx drizzle-kit generate",
-    "db:migrate": "npx drizzle-kit migrate",
-    "db:migrate:local": "npx wrangler d1 migrations apply DB --local"
+    "db:migrate": "npx drizzle-kit migrate"
   },
   "author": "",
   "license": "ISC"

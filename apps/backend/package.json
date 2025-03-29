@@ -3,7 +3,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "dev": "wrangler dev",
-    "build": "wrangler build"
+    "build": "wrangler build",
+    "postinstall": "wrangler d1 migrations apply DB --local"
   },
   "dependencies": {
     "@hono/arktype-validator": "^2.0.0",
