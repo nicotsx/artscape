@@ -132,6 +132,7 @@ const fetchExhibitions = async () => {
       await db.insert(exhibitionsTable).values({
         id,
         title,
+        ongoing: 1,
         image: imageUrl ?? '',
         startDate: begindate,
         endDate: enddate,
