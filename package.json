@@ -8,16 +8,17 @@
     "react-router": "^7.4.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@cloudflare/workers-types": "^4.20250214.0",
     "@hey-api/openapi-ts": "^0.64.15",
     "drizzle-kit": "^0.30.6",
-    "nodemon": "^3.1.9",
     "turbo": "^2.4.4",
     "wrangler": "^4.6.0"
   },
   "scripts": {
-    "dev": "nodemon",
+    "dev": "turbo run dev",
     "build": "turbo run build",
+    "preview": "npm run build && wrangler dev",
     "deploy": "wrangler deploy",
     "gen:api-client": "openapi-ts",
     "db:generate-migrations": "npx drizzle-kit generate",

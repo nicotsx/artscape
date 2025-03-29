@@ -9,7 +9,7 @@ export const exhibitionsController = (app: HonoApp) => {
   app.get(
     '/exhibitions',
     describeRoute({
-      responses: { 200: { content: { 'text/plain': { schema: resolver(getExhibitionsResponse) } } } },
+      responses: { 200: { content: { 'application/json': { schema: resolver(getExhibitionsResponse) } } } },
     }),
     async (c) => {
       const exhibitions = await exhibitionService.getExhibitions();
@@ -20,7 +20,7 @@ export const exhibitionsController = (app: HonoApp) => {
   app.get(
     '/exhibitions/:id',
     describeRoute({
-      responses: { 200: { content: { 'text/plain': { schema: resolver(getExhibitionResponse) } } } },
+      responses: { 200: { content: { 'application/json': { schema: resolver(getExhibitionResponse) } } } },
     }),
     async (c) => {
       const { id } = c.req.param();

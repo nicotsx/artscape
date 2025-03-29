@@ -1,8 +1,10 @@
 import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 import { getApiExhibitionsById } from '~/api-client';
 import { getOptimizedImageUrl } from '~/utils/cloudinary';
+import { getWeatherDescription, getWeatherIcon } from '~/utils/weather';
 import type { Route } from './+types/exhibition-details';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
@@ -79,7 +81,7 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
                   {exhibition.title}
                 </motion.h1>
                 <motion.p variants={fadeInUp} className="text-xl text-gray-300">
-                  {exhibition.shortDescription}
+                  {exhibition.shortDescription || ''}
                 </motion.p>
               </div>
               <motion.div variants={fadeInUp} className="flex gap-4">
@@ -108,7 +110,7 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
         >
           <motion.div variants={fadeInUp} className="md:col-span-2">
             <h2 className="text-2xl font-bold mb-6">About the Exhibition</h2>
-            <p className="text-gray-300 leading-relaxed mb-8">{exhibition.description}</p>
+            <p className="text-gray-300 leading-relaxed mb-8">{exhibition.description || 'No description available.'}</p>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -140,12 +142,37 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
                   </div>
                 </motion.div>
               </div>
-              <div className="mt-8">
-                <h4 className="font-medium mb-2">Section</h4>
-                <div className="space-y-2 text-gray-300">
-                  <p>Something else?</p>
-                </div>
-              </div>
+              {exhibition.weather && (
+                <motion.div whileHover={{ scale: 1.02 }} className="mt-8 bg-white/5 rounded-xl p-6">
+                  <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">Weather Forecast</h4>
+                  <div className="space-y-4">
+                    {exhibition.weather.today !== undefined && (
+                      <motion.div whileHover={{ x: 5 }} className="flex items-center gap-3">
+                        {React.createElement(getWeatherIcon(Number(exhibition.weather.today)), {
+                          size: 20,
+                          className: 'text-gray-400',
+                        })}
+                        <div>
+                          <p className="font-medium">Today</p>
+                          <p className="text-sm text-gray-400">{getWeatherDescription(Number(exhibition.weather.today))}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                    {exhibition.weather.tomorrow !== undefined && (
+                      <motion.div whileHover={{ x: 5 }} className="flex items-center gap-3">
+                        {React.createElement(getWeatherIcon(Number(exhibition.weather.tomorrow)), {
+                          size: 20,
+                          className: 'text-gray-400',
+                        })}
+                        <div>
+                          <p className="font-medium">Tomorrow</p>
+                          <p className="text-sm text-gray-400">{getWeatherDescription(Number(exhibition.weather.tomorrow))}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           </motion.div>
         </motion.div>

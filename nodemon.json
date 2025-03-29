@@ -1,5 +1,0 @@
-{
-  "watch": ["apps/frontend/app", "apps/backend/src", "workers"],
-  "exec": "npm run build && wrangler dev",
-  "ext": "ts tsx css"
-}
