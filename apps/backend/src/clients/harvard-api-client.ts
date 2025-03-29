@@ -38,9 +38,13 @@ const exhibitionListSchema = type({
 export class HarvardApiClient {
   private baseUrl = 'https://api.harvardartmuseums.org';
 
-  constructor(private readonly apiKey: string) {}
+  constructor(private readonly apiKey?: string) {}
 
   async getCurrentExhibitions(params: { page?: number } = {}) {
+    if (!this.apiKey) {
+      throw new Error('HARVARD_API_KEY key is required to fetch from Harvard API');
+    }
+
     const url = new URL(`${this.baseUrl}/exhibition`);
     url.searchParams.set('size', '10');
     url.searchParams.set('apikey', this.apiKey);

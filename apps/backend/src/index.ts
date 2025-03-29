@@ -24,7 +24,7 @@ export default {
   async fetch(request: Request, env: Env & Bindings, ctx: ExecutionContext) {
     try {
       console.info('Request received', request.url);
-      initializeEnv(env);
+      await initializeEnv(env);
 
       return app.fetch(request, env, ctx);
     } catch (error) {
@@ -35,7 +35,7 @@ export default {
   async scheduled(cron: ScheduledController, env: Env & Bindings, ctx: ExecutionContext): Promise<void> {
     try {
       console.info('Scheduled task started', cron.cron, cron.scheduledTime);
-      initializeEnv(env);
+      await initializeEnv(env);
 
       ctx.waitUntil(exhibitionService.fetchExhibitions());
     } catch (error) {

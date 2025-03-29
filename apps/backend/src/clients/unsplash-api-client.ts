@@ -22,7 +22,7 @@ const searchResponseSchema = type({
 export class UnsplashApiClient {
   private baseUrl = 'https://api.unsplash.com';
 
-  constructor(private readonly accessKey: string) {}
+  constructor(private readonly accessKey?: string) {}
 
   async searchImage(query: string): Promise<typeof unsplashImageSchema.infer | null> {
     const url = new URL(`${this.baseUrl}/search/photos`);
