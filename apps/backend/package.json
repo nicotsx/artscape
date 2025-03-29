@@ -1,11 +1,9 @@
 {
   "name": "backend",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "wrangler dev",
-    "db:generate-migrations": "npx drizzle-kit generate",
-    "db:migrate": "npx drizzle-kit migrate",
-    "db:migrate:local": "npx wrangler d1 migrations apply DB --local"
+    "build": "wrangler build"
   },
   "dependencies": {
     "@hono/arktype-validator": "^2.0.0",

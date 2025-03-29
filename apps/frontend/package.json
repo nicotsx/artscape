@@ -1,7 +1,8 @@
 {
-  "name": "artscape",
+  "name": "frontend",
   "private": true,
   "type": "module",
+  "main": "./build/server/index.js",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
