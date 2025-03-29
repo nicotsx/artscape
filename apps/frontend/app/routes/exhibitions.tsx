@@ -16,7 +16,7 @@ const cardVariants = {
   show: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { type: 'spring', stiffness: 100, damping: 15, mass: 1 } },
 };
 
-export async function loader() {
+export async function clientLoader() {
   const { data } = await getApiExhibitions();
   return data;
 }

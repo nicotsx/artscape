@@ -10,7 +10,7 @@ export function meta() {
   return [{ title: 'Artscape' }, { name: 'description', content: 'Discover Art Exhibitions' }];
 }
 
-export async function loader() {
+export async function clientLoader() {
   const { data } = await getApiExhibitions();
   return data;
 }

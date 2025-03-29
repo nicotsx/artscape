@@ -18,6 +18,7 @@ export const links: Route.LinksFunction = () => [
 
 client.setConfig({
   credentials: 'include',
+  baseUrl: '/',
 });
 
 export function Layout({ children }: { children: React.ReactNode }) {

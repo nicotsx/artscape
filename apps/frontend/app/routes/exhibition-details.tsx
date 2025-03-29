@@ -5,7 +5,7 @@ import { getApiExhibitionsById } from '~/api-client';
 import { getOptimizedImageUrl } from '~/utils/cloudinary';
 import type { Route } from './+types/exhibition-details';
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function clientLoader({ params }: Route.LoaderArgs) {
   const { data } = await getApiExhibitionsById({ path: { id: params.id } });
   return data;
 }
