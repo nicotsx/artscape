@@ -11,20 +11,7 @@ import { db, env, kv } from '../core/env/env';
 const getExhibitions = async () => {
   console.info('Fetching current exhibitions');
   const exhibitions = await db.query.exhibitionsTable.findMany({ with: { venue: true }, where: eq(exhibitionsTable.ongoing, 1) });
-
-  const exhibitionsWithWeather = await Promise.all(
-    exhibitions.map(async (exhibition) => {
-      const weather = await getExhibitionWeather(exhibition.venue);
-      return {
-        ...exhibition,
-        weather,
-      };
-    }),
-  );
-
-  console.info('Fetched', exhibitionsWithWeather.length, 'exhibitions');
-
-  return exhibitionsWithWeather;
+  return exhibitions;
 };
 
 /**
@@ -63,6 +50,7 @@ const getExhibitionWeather = async (venue: Venue | null) => {
   const cachedData = await kv.get(cacheKey, 'json');
 
   if (cachedData) {
+    console.info('Using cached weather data for', venue.city);
     return cachedData;
   }
 

@@ -1,9 +1,10 @@
-import { Filter, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { getApiExhibitions } from '~/api-client';
 import { ExhibitionCard } from '~/components/exhibition-card';
+import type { Exhibition } from '~/types/api.types';
 import type { Route } from './+types/exhibitions';
 
 const containerVariants = {
@@ -27,13 +28,11 @@ export function meta() {
 
 export default function Exhibitions({ loaderData }: Route.ComponentProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'Contemporary', 'Digital Art', 'Abstract', 'Photography', 'Sculpture'];
-
-  const filteredExhibitions = loaderData?.exhibitions.filter((exhibition) => {
+  const filteredExhibitions = loaderData?.exhibitions.filter((exhibition: Exhibition) => {
     const matchesSearch =
-      exhibition.title.toLowerCase().includes(searchQuery.toLowerCase()) || exhibition.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      exhibition.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (typeof exhibition.description === 'string' && exhibition.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesSearch;
   });
 
@@ -44,40 +43,16 @@ export default function Exhibitions({ loaderData }: Route.ComponentProps) {
           <h1 className="text-4xl font-bold">All Exhibitions</h1>
           <p className="text-gray-400 mt-2">Explore our curated collection of ongoing exhibitions</p>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col md:flex-row gap-4 mb-8"
-        >
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search exhibitions or artists..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:border-white/20 transition"
-              />
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Filter size={20} className="text-gray-400" />
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {categories.map((category) => (
-                <button
-                  type="button"
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${
-                    selectedCategory === category ? 'bg-white text-black' : 'bg-white/5 hover:bg-white/10'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search exhibitions or artists..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:border-white/20 transition"
+            />
           </div>
         </motion.div>
         <motion.div
