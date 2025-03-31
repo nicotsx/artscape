@@ -15,7 +15,7 @@ export const ExhibitionCard = ({ exhibition }: { exhibition: Exhibition }) => {
         alt={exhibition.title}
         className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 p-6">
           <p className="text-sm font-medium text-gray-300">{exhibition.title}</p>
           <h3 className="text-xl font-bold mt-2">{exhibition.title}</h3>
