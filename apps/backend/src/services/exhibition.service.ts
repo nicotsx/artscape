@@ -64,7 +64,7 @@ const getExhibitionWeather = async (venue: Venue | null) => {
   const weatherData = await weatherClient.getWeatherForecast(coords.latitude, coords.longitude);
 
   if (weatherData) {
-    await kv.put(cacheKey, JSON.stringify(weatherData), { expirationTtl: 3600 });
+    await kv.put(cacheKey, JSON.stringify(weatherData), { expirationTtl: 3600 * 6 });
   }
 
   return weatherData;

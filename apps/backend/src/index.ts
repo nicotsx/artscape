@@ -1,5 +1,4 @@
 import { type Env, Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { docsController } from './controllers/docs.controller';
 import { exhibitionsController } from './controllers/exhibition.controller';
 import { initializeEnv } from './core/env/env';
@@ -14,8 +13,6 @@ export type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>().basePath('/api');
 export type HonoApp = typeof app;
-
-app.use(cors());
 
 docsController(app);
 exhibitionsController(app);
