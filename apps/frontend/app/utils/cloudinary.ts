@@ -6,10 +6,6 @@
  * @returns Optimized Cloudinary URL
  */
 export const getOptimizedImageUrl = (imageUrl: string, width: number, height?: number): string => {
-  if (imageUrl.includes('res.cloudinary.com')) {
-    return imageUrl;
-  }
-
   try {
     const baseUrl = 'https://res.cloudinary.com/dmsvulc8t/image/fetch';
     const transformations = [];
