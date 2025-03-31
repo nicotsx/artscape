@@ -11,6 +11,7 @@ export const exhibitionsTable = sqliteTable('exhibitions', {
   shortDescription: text(),
   description: text(),
   ongoing: int(),
+  url: text(),
 });
 
 export const exhibitionRelations = relations(exhibitionsTable, ({ one }) => ({

@@ -99,7 +99,7 @@ const fetchExhibitions = async () => {
       dbVenue = newVenue;
     }
 
-    const { id, title, poster, begindate, enddate, description, shortdescription } = exhibition;
+    const { id, title, poster, begindate, enddate, description, shortdescription, url } = exhibition;
     const dbExhibition = await db.query.exhibitionsTable.findFirst({ where: eq(exhibitionsTable.id, id) });
 
     let imageUrl = poster?.imageurl ?? dbExhibition?.image;
@@ -123,6 +123,7 @@ const fetchExhibitions = async () => {
           venueId: dbVenue.id,
           description,
           shortDescription: shortdescription,
+          url,
         })
         .where(eq(exhibitionsTable.id, id));
     } else {
@@ -136,6 +137,7 @@ const fetchExhibitions = async () => {
         venueId: dbVenue.id,
         description,
         shortDescription: shortdescription,
+        url,
       });
     }
   }

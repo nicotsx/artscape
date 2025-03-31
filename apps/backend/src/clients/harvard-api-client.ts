@@ -18,6 +18,7 @@ const exhibitionSchema = type({
   begindate: 'string',
   enddate: 'string',
   venues: venueSchema.array(),
+  url: 'string',
   poster: type({
     imageurl: 'string?',
     caption: 'string?',

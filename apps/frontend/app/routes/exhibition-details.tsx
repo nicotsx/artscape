@@ -142,6 +142,14 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
                   </div>
                 </motion.div>
               </div>
+              <a
+                href={exhibition.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-gray-400 hover:text-gray-300 transition mt-4 block"
+              >
+                Exhibition data provided by the Harvard Art Museums
+              </a>
               {exhibition.weather && (
                 <motion.div whileHover={{ scale: 1.02 }} className="mt-8 bg-white/5 rounded-xl p-6">
                   <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">Weather Forecast</h4>
@@ -171,6 +179,14 @@ export default function ExhibitionDetails({ loaderData }: Route.ComponentProps) 
                       </motion.div>
                     )}
                   </div>
+                  <a
+                    href="https://open-meteo.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-400 hover:text-gray-300 transition mt-4 block"
+                  >
+                    Weather data by Open-Meteo.com
+                  </a>
                 </motion.div>
               )}
             </motion.div>

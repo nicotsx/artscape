@@ -17,6 +17,7 @@ export type GetApiExhibitionsResponses = {
             shortDescription: string | unknown;
             startDate: string;
             title: string;
+            url: string;
             venue: {
                 address1: string | unknown;
                 city: string | unknown;
@@ -56,6 +57,7 @@ export type GetApiExhibitionsByIdResponses = {
             shortDescription: string | unknown;
             startDate: string;
             title: string;
+            url: string;
             venue: {
                 address1: string | unknown;
                 city: string | unknown;

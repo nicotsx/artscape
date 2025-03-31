@@ -15,6 +15,7 @@ export const getExhibitionsResponse = type({
     startDate: 'string',
     endDate: 'string',
     venueId: 'number',
+    url: 'string',
     venue: type({
       name: 'string',
       fullname: 'string',
@@ -41,6 +42,7 @@ export const getExhibitionResponse = type({
     startDate: 'string',
     endDate: 'string',
     venueId: 'number',
+    url: 'string',
     venue: type({
       name: 'string',
       fullname: 'string',
